@@ -49,7 +49,7 @@ export class ModelHandle {
         this.model = model;
 
         /**
-         * unique ID which can be used to identify this handle 
+         * unique ID which can be used to identify this handle
          */
         this.id = ModelHandle._instancesNum++;
 
@@ -60,7 +60,7 @@ export class ModelHandle {
 
         this._numberOfIndices = model.indices.length;
 
-        //data structure 
+        //data structure
         this._vertexTexture = gl.createTexture();
         this._matrixTexture = gl.createTexture();
         this._styleTexture = gl.createTexture();
@@ -376,6 +376,49 @@ export class ModelHandle {
 
         return this.model.states[span[0] * 2 + 1];
     }
+
+
+    public onlyShow(state: State, args: number | number[]): void {
+        if (typeof (state) != 'number' && state < 0 && state > 255
+        ) throw 'You have to specify state as an ID of state or index in style pallete.';
+        if (typeof (args) == 'undefined')
+            throw 'You have to specify products as an array of product IDs or as a product type ID';
+
+        for (var i = 0; i < this.model.states.length; i += 2) {
+            this.model.states[i] = State.HIDDEN;
+        }
+        var maps = [];
+        //it is type
+        if (typeof (args) == 'number') {
+            for (var n in this.model.productMaps) {
+                var map = this.model.productMaps[n];
+                if (map.type == args) maps.push(map);
+            }
+        }
+        //it is a list of IDs
+        else {
+            for (var l = 0; l < args.length; l++) {
+                var id = args[l];
+                var map = this.getProductMap(id);
+                if (map != null) maps.push(map);
+            }
+        }
+
+        //shift +1 if it is an overlay colour style or 0 if it is a state.
+        var shift = state <= 225 ? 1 : 0;
+        maps.forEach((map) => {
+            map.spans.forEach((span) => {
+                //set state or style
+                for (var k = span[0]; k < span[1]; k++) {
+                    this.model.states[k * 2 + shift] = state;
+                }
+            });
+        });
+
+        //buffer data to GPU
+        this.bufferData(this._stateBuffer, this.model.states);
+    }
+
 
     public setState(state: State, args: number | number[]): void {
         if (typeof (state) != 'number' && state < 0 && state > 255

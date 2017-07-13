@@ -21,7 +21,7 @@ export { NavigationHome } from "./plugins/NavigationHome/navigation-home";
 export class Viewer {
 
     /**
-    * This is constructor of the xBIM Viewer. It gets HTMLCanvasElement or string ID as an argument. Viewer will than be initialized 
+    * This is constructor of the xBIM Viewer. It gets HTMLCanvasElement or string ID as an argument. Viewer will than be initialized
     * in the context of specified canvas. Any other argument will throw exception.
     * @name Viewer
     * @constructor
@@ -53,10 +53,10 @@ export class Viewer {
         */
         /**
         * This is only a structure. Don't call the constructor.
-        * @classdesc This is a structure that holds settings of perspective camera. If you want 
+        * @classdesc This is a structure that holds settings of perspective camera. If you want
         * to switch viewer to use perspective camera set {@link Viewer#camera camera} to 'perspective'.
-        * You can modify this but it is not necessary because sensible values are 
-        * defined when geometry model is loaded with {@link Viewer#load load()} method. If you want to 
+        * You can modify this but it is not necessary because sensible values are
+        * defined when geometry model is loaded with {@link Viewer#load load()} method. If you want to
         * change these values you have to do it after geometry is loaded.
         * @class
         * @name PerspectiveCamera
@@ -71,7 +71,7 @@ export class Viewer {
         };
 
         /**
-        * This is a structure that holds settings of orthogonal camera. You can modify this but it is not necessary because sensible values are 
+        * This is a structure that holds settings of orthogonal camera. You can modify this but it is not necessary because sensible values are
         * defined when geometry model is loaded with {@link Viewer#load load()} method. If you want to change these values you have to do it after geometry is loaded.
         * @member {OrthogonalCamera} Viewer#orthogonalCamera
         */
@@ -136,13 +136,13 @@ export class Viewer {
         * @member {String} Viewer#renderingMode
         */
         this.renderingMode = RenderingMode.NORMAL;
-        /** 
+        /**
         * Clipping plane [a, b, c, d] defined as normal equation of the plane ax + by + cz + d = 0. [0,0,0,0] is for no clipping plane.
         * @member {Number[]} Viewer#clippingPlaneA
         */
         this._clippingPlaneA = [0, 0, 0, 0];
 
-        /** 
+        /**
         * Clipping plane [a, b, c, d] defined as normal equation of the plane ax + by + cz + d = 0. [0,0,0,0] is for no clipping plane.
         * @member {Number[]} Viewer#clippingPlaneB
         */
@@ -330,17 +330,17 @@ export class Viewer {
             */
             warnings: [],
             /**
-            * If this array contains any errors Viewer won't work at all or won't work as expected. 
-            * You can use messages in this array to report problems to user. However, user won't probably 
-            * be able to do to much with it except trying to use different browser. IE10- are not supported for example. 
+            * If this array contains any errors Viewer won't work at all or won't work as expected.
+            * You can use messages in this array to report problems to user. However, user won't probably
+            * be able to do to much with it except trying to use different browser. IE10- are not supported for example.
             * The latest version of IE should be all right.
             * @member {string[]}  Prerequisites#errors
             */
             errors: [],
             /**
-            * If false Viewer won't work at all or won't work as expected. 
-            * You can use messages in {@link Prerequisites#errors errors array} to report problems to user. However, user won't probably 
-            * be able to do to much with it except trying to use different browser. IE10- are not supported for example. 
+            * If false Viewer won't work at all or won't work as expected.
+            * You can use messages in {@link Prerequisites#errors errors array} to report problems to user. However, user won't probably
+            * be able to do to much with it except trying to use different browser. IE10- are not supported for example.
             * The latest version of IE should be all right.
             * @member {string[]}  Prerequisites#noErrors
             */
@@ -397,7 +397,7 @@ export class Viewer {
 
     /**
     * Adds plugin to the viewer. Plugins can implement certain methods which get called in certain moments in time like
-    * before draw, after draw etc. This makes it possible to implement functionality tightly integrated into Viewer like navigation cube or others. 
+    * before draw, after draw etc. This makes it possible to implement functionality tightly integrated into Viewer like navigation cube or others.
     * @function Viewer#addPlugin
     * @param {object} plugin - plug-in object
     */
@@ -410,7 +410,7 @@ export class Viewer {
 
     /**
     * Removes plugin from the viewer. Plugins can implement certain methods which get called in certain moments in time like
-    * before draw, after draw etc. This makes it possible to implement functionality tightly integrated into Viewer like navigation cube or others. 
+    * before draw, after draw etc. This makes it possible to implement functionality tightly integrated into Viewer like navigation cube or others.
     * @function Viewer#removePlugin
     * @param {object} plugin - plug-in object
     */
@@ -442,7 +442,7 @@ export class Viewer {
     }
 
     /**
-    * You can use this function to change state of products in the model. State has to have one of values from {@link xState xState} enumeration. 
+    * You can use this function to change state of products in the model. State has to have one of values from {@link xState xState} enumeration.
     * Target is either enumeration from {@link xProductType xProductType} or array of product IDs. If you specify type it will effect all elements of the type.
     *
     * @function Viewer#setState
@@ -457,8 +457,16 @@ export class Viewer {
         this._stylingChanged = true;
     }
 
+    public onlyShow(state: State, target: number | number[]) {
+        if (typeof (state) == 'undefined' || !(state >= 225 && state <= 255)) throw 'State has to be defined as 225 - 255. Use xState enum.';
+        this._handles.forEach((handle) => {
+            handle.onlyShow(state, target);
+        });
+        this._stylingChanged = true;
+    }
+
     /**
-    * Use this function to get state of the products in the model. You can compare result of this function 
+    * Use this function to get state of the products in the model. You can compare result of this function
     * with one of values from {@link xState xState} enumeration. 0xFF is the default value.
     *
     * @function Viewer#getState
@@ -476,11 +484,11 @@ export class Viewer {
     }
 
     /**
-    * Use this function to reset state of all products to 'UNDEFINED' which means visible and not highlighted. 
+    * Use this function to reset state of all products to 'UNDEFINED' which means visible and not highlighted.
     * You can use optional hideSpaces parameter if you also want to show spaces. They will be hidden by default.
-    * 
+    *
     * @function Viewer#resetStates
-    * @param {Bool} [hideSpaces = true] - Default state is UNDEFINED which would also show spaces. That is often not 
+    * @param {Bool} [hideSpaces = true] - Default state is UNDEFINED which would also show spaces. That is often not
     * desired so it can be excluded with this parameter.
     */
     public resetStates(hideSpaces: boolean) {
@@ -499,7 +507,7 @@ export class Viewer {
 
     /**
      * Gets complete model state and style. Resulting object can be used to restore the state later on.
-     * 
+     *
      * @param {Number} id - Model ID which you can get from {@link Viewer#event:loaded loaded} event.
      * @returns {Array} - Array representing model state in compact form suitable for serialization
      */
@@ -528,10 +536,10 @@ export class Viewer {
     }
 
     /**
-    * Use this method for restyling of the model. This doesn't change the default appearance of the products so you can think about it as an overlay. You can 
-    * remove the overlay if you set the style to {@link xState#UNSTYLED xState.UNSTYLED} value. You can combine restyling and hiding in this way. 
-    * Use {@link Viewer#defineStyle defineStyle()} to define styling first. 
-    * 
+    * Use this method for restyling of the model. This doesn't change the default appearance of the products so you can think about it as an overlay. You can
+    * remove the overlay if you set the style to {@link xState#UNSTYLED xState.UNSTYLED} value. You can combine restyling and hiding in this way.
+    * Use {@link Viewer#defineStyle defineStyle()} to define styling first.
+    *
     * @function Viewer#setStyle
     * @param style - style defined in {@link Viewer#defineStyle defineStyle()} method
     * @param {Number[] | Number} target - Target of the change. It can either be array of product IDs or product type from {@link xProductType xProductType}.
@@ -556,7 +564,7 @@ export class Viewer {
     }
 
     /**
-    * Use this function to get overriding colour style of the products in the model. The number you get is the index of 
+    * Use this function to get overriding colour style of the products in the model. The number you get is the index of
     * your custom colour which you have defined in {@link Viewer#defineStyle defineStyle()} function. 0xFF is the default value.
     *
     * @function Viewer#getStyle
@@ -575,7 +583,7 @@ export class Viewer {
     /**
     * Use this function to reset appearance of all products to their default styles.
     *
-    * @function Viewer#resetStyles 
+    * @function Viewer#resetStyles
     */
     public resetStyles() {
         this._handles.forEach((handle) => {
@@ -585,7 +593,7 @@ export class Viewer {
     }
 
     /**
-    * 
+    *
     * @function Viewer#getProductType
     * @return {Number} Product type ID. This is either null if no type is identified or one of {@link xProductType type ids}.
     * @param {Number} prodID - Product ID. You can get this value either from semantic structure of the model or by listening to {@link Viewer#event:pick pick} event.
@@ -601,7 +609,7 @@ export class Viewer {
 
     /**
     * Use this method to set position of camera. Use it after {@link Viewer#setCameraTarget setCameraTarget()} to get desired result.
-    * 
+    *
     * @function Viewer#setCameraPosition
     * @param {Number[]} coordinates - 3D coordinates of the camera in WCS
     */
@@ -645,7 +653,7 @@ export class Viewer {
             } else
                 return false;
         }
-        //set navigation origin and default distance to the merged region composed 
+        //set navigation origin and default distance to the merged region composed
         //from all models which are not stopped at the moment
         else {
             //get region extent and set it's centre as a navigation origin
@@ -709,7 +717,7 @@ export class Viewer {
     /**
     * This method uses WebWorker if available to load the model into this viewer.
     * Model has to be either URL to wexBIM file or Blob or File representing wexBIM file binary data. Any other type of argument will throw an exception.
-    * You can load more than one model if they occupy the same space, use the same scale and have unique product IDs. Duplicated IDs won't affect 
+    * You can load more than one model if they occupy the same space, use the same scale and have unique product IDs. Duplicated IDs won't affect
     * visualization itself but would cause unexpected user interaction (picking, zooming, ...).
     * @function Viewer#load
     * @param {String} loaderUrl - Url of the 'xbim-geometry-loader.js' script which will be called as a worker
@@ -748,7 +756,7 @@ export class Viewer {
     * This method is used to load model data into viewer. Model has to be either URL to wexBIM file or Blob or File representing wexBIM file binary data. Any other type of argument will throw an exception.
     * Region extend is determined based on the region of the model
     * Default view if 'front'. If you want to define different view you have to set it up in handler of {@link Viewer#event:loaded loaded} event. <br>
-    * You can load more than one model if they occupy the same space, use the same scale and have unique product IDs. Duplicated IDs won't affect 
+    * You can load more than one model if they occupy the same space, use the same scale and have unique product IDs. Duplicated IDs won't affect
     * visualization itself but would cause unexpected user interaction (picking, zooming, ...)
     * @function Viewer#load
     * @param {String | Blob | File} model - Model has to be either URL to wexBIM file or Blob or File representing wexBIM file binary data.
@@ -771,7 +779,7 @@ export class Viewer {
         geometry.load(model);
     }
 
-    //this is a private function used to add loaded geometry as a new handle and to set up camera and 
+    //this is a private function used to add loaded geometry as a new handle and to set up camera and
     //default view if this is the first geometry loaded
     private addHandle(geometry: ModelGeometry, tag?: any): void {
         var viewer = this;
@@ -817,12 +825,12 @@ export class Viewer {
         /**
          * Occurs when geometry model is loaded into the viewer. This event returns object containing ID of the model.
          * This ID can later be used to unload or temporarily stop the model.
-         * 
+         *
          * @event Viewer#loaded
          * @type {object}
          * @param {Number} id - model ID assigned by the viewer
          * @param {Any} tag - tag which was passed to 'Viewer.load()' function
-         * 
+         *
         */
         viewer.fire('loaded', { id: handle.id, tag: tag })
         viewer._geometryLoaded = true;
@@ -830,7 +838,7 @@ export class Viewer {
 
     /**
      * Unloads model from the GPU. This action is not reversible.
-     * 
+     *
      * @param {Number} modelId - ID of the model which you can get from {@link Viewer#event:loaded loaded} event.
      */
     public unload(modelId: number) {
@@ -1495,7 +1503,7 @@ export class Viewer {
         /**
          * Occurs after every frame in animation. Don't do anything heavy weighted in here as it will happen about 60 times in a second all the time.
          *
-         * @event Viewer#frame 
+         * @event Viewer#frame
          * @type {object}
          */
         this.fire('frame', {});
@@ -1560,7 +1568,7 @@ export class Viewer {
     * Use this function to show default views.
     *
     * @function Viewer#show
-    * @param {String} type - Type of view. Allowed values are <strong>'top', 'bottom', 'front', 'back', 'left', 'right'</strong>. 
+    * @param {String} type - Type of view. Allowed values are <strong>'top', 'bottom', 'front', 'back', 'left', 'right'</strong>.
     * Directions of this views are defined by the coordinate system. Target and distance are defined by {@link Viewer#setCameraTarget setCameraTarget()} method to certain product ID
     * or to the model extent if {@link Viewer#setCameraTarget setCameraTarget()} is called with no arguments.
     */
@@ -1631,7 +1639,7 @@ export class Viewer {
             plugin.onBeforeDrawId();
         });
 
-        //it is not necessary to render the image in full resolution so this factor is used for less resolution. 
+        //it is not necessary to render the image in full resolution so this factor is used for less resolution.
         var factor = 2;
         var gl = this.gl;
         var width = this._width / factor;
@@ -1653,7 +1661,7 @@ export class Viewer {
         gl.activeTexture(gl.TEXTURE0);
         gl.bindTexture(gl.TEXTURE_2D, texture);
         gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, width, height, 0, gl.RGBA, gl.UNSIGNED_BYTE, null);
-        // Set the parameters so we can render any image size.        
+        // Set the parameters so we can render any image size.
         gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
         gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
         gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.NEAREST);
@@ -1768,7 +1776,7 @@ export class Viewer {
                 /**
                 * Occurs after every 30th frame in animation. Use this event if you want to report FPS to the user. It might also be interesting performance measure.
                 *
-                * @event Viewer#fps 
+                * @event Viewer#fps
                 * @type {Number}
                 */
                 viewer.fire('fps', Math.floor(fps));
@@ -1784,7 +1792,7 @@ export class Viewer {
     }
 
     /**
-    * Use this function to stop animation of the model. User will still be able to see the latest state of the model. You can 
+    * Use this function to stop animation of the model. User will still be able to see the latest state of the model. You can
     * switch animation of the model on again by calling {@link Viewer#start start()}.
     *
     * @function Viewer#stop
@@ -1820,7 +1828,7 @@ export class Viewer {
     }
 
     /**
-    * Use this function to enable picking of the objects in the specified model. 
+    * Use this function to enable picking of the objects in the specified model.
     * All models are pickable by default when loaded. You can stop the model from being pickable using {@link Viewer#stopPicking} function.
     *
     * @function Viewer#startPicking
@@ -1835,7 +1843,7 @@ export class Viewer {
     }
 
     /**
-     * Use this method to register to events of the viewer like {@link Viewer#event:pick pick}, {@link Viewer#event:mouseDown mouseDown}, 
+     * Use this method to register to events of the viewer like {@link Viewer#event:pick pick}, {@link Viewer#event:mouseDown mouseDown},
      * {@link Viewer#event:loaded loaded} and others. You can define arbitrary number
      * of event handlers for any event. You can remove handler by calling {@link Viewer#off off()} method.
      *
@@ -1976,7 +1984,7 @@ export class Viewer {
     /**
     * Use this method to clip the model. If you call the function with no arguments interactive clipping will start. This is based on SVG overlay
     * so SVG support is necessary for it. But as WebGL is more advanced technology than SVG it is sound assumption that it is present in the browser.
-    * Use {@link xViewer.check xViewer.check()} to make sure it is supported at the very beginning of using of xViewer. Use {@link xViewer#unclip unclip()} method to 
+    * Use {@link xViewer.check xViewer.check()} to make sure it is supported at the very beginning of using of xViewer. Use {@link xViewer#unclip unclip()} method to
     * unset clipping plane.
     *
     * @function xViewer#clip
@@ -2044,7 +2052,7 @@ export class Viewer {
         var handleMouseUp = (event) => {
             if (!down) return;
 
-            //check if the points are not identical. 
+            //check if the points are not identical.
             var r = svg.getBoundingClientRect();
             if (position.x == event.clientX - r.left && position.y == event.clientY - r.top) {
                 return;
@@ -2133,14 +2141,14 @@ export class Viewer {
 
     /**
     * This method is only active when interactive clipping is active. It stops interactive clipping operation.
-    * 
+    *
     * @function xViewer#stopClipping
     */
     //this is only a placeholder. It is actually created only when interactive clipping is active.
     public stopClipping() { }
 
     /**
-    * This method will cancel any clipping plane if it is defined. Use {@link xViewer#clip clip()} 
+    * This method will cancel any clipping plane if it is defined. Use {@link xViewer#clip clip()}
     * method to define clipping by point and normal of the plane or interactively if you call it with no arguments.
     * @function xViewer#unclip
     * @fires xViewer#unclipped
