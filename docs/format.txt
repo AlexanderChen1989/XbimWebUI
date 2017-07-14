@@ -1,0 +1,55 @@
+(int)      magic number
+(byte)     version of stream
+(int)      number of shapes // binaryStream.Write((int) numberOfGeometries);
+(int)      number of vertices // binaryStream.Write((int) numberOfVertices);
+(int)      number of triangles // binaryStream.Write((int) numberOfTriangles);
+(int)      number of matrices // binaryStream.Write((int) numberOfMatrices);
+(int)      number of products // binaryStream.Write((int) numberOfProducts)
+(int)      number of styles
+(float)    conversion to meter factor
+(int16)    the population data // regions.Count
+
+// foreach region in regions
+(int)      region.Population
+(float)    center.X
+(float)    center.Y
+(float)    center.Z
+(byte[] of 6 floats)  bounding box of largest region
+
+// foreach style in styles
+(int) styleId //style ID
+(float) colour.Red
+(float) colour.Green
+(float) colour.Blue
+(float) colour.Alpha
+
+
+// write out all the product bounding boxes
+// foreach product in products
+// numberOfProducts++;
+(int)      product.EntityLabel
+(ushort)   product.type
+(byte[] of 6 floats)
+
+// foreach (var geometry in lookup)
+// numberOfGeometries++;
+(int) the number of repetitions of the geometry //binaryStream.Write(xbimShapeInstances.Count);
+// xbimShapeInstances.Count > 1
+    //  foreach (IXbimShapeInstanceData xbimShapeInstance in xbimShapeInstances)
+    (int)       xbimShapeInstance.IfcProductLabel
+    (ushort)    xbimShapeInstance.IfcTypeId)
+    (uint)      xbimShapeInstance.InstanceLabel
+    (int)       xbimShapeInstance.StyleLabel
+    (byte[])    xbimShapeInstance.Transformation
+    // numberOfTriangles += XbimShapeTriangulation.TriangleCount(((IXbimShapeGeometryData) geometry).ShapeData);
+    // numberOfMatrices++;
+  // binaryStream.Write(geometry.ShapeData);
+
+// else
+  (int)       xbimShapeInstance.IfcProductLabel
+  (ushort)    xbimShapeInstance.IfcTypeId)
+  (uint)      xbimShapeInstance.InstanceLabel
+  (int)       xbimShapeInstance.StyleLabel
+  (byte[])    trTransformed.Write(binaryStream)
+  // numberOfTriangles += XbimShapeTriangulation.TriangleCount(((IXbimShapeGeometryData) geometry).ShapeData);
+  // numberOfVertices += XbimShapeTriangulation.VerticesCount(((IXbimShapeGeometryData) geometry).ShapeData);
