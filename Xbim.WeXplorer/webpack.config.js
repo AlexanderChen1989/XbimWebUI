@@ -10,6 +10,7 @@ var entries = {};
 entries['xbim-viewer'] = './Viewer/viewer.ts';
 entries['xbim-browser'] = './Viewer/browser/browser.ts';
 entries['xbim-geometry-loader'] = './Viewer/workers/geometry-loader.ts';
+entries['xbim-geometry-loader-new'] = './Viewer/workers/geometry-loader-new.ts';
 
 var plugins = [];
 plugins.push(new webpack.BannerPlugin({banner: banner,  raw: true }));
@@ -50,4 +51,3 @@ module.exports = {
         extensions: ['.ts', '.js']
     }
 }
-
