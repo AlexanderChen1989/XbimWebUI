@@ -150,6 +150,9 @@ export class ModelGeometry {
                 iMatrix += 16;
                 // }
 
+                // read out transformation num trangles
+                br.readInt32();
+
                 var styleItem = styleMap['getStyle'](styleId);
                 if (styleItem === null)
                     styleItem = defaultStyle;
@@ -165,6 +168,12 @@ export class ModelGeometry {
 
             //read shape geometry
             var shapeGeom = new TriangulatedShape();
+
+            // read out geometry num vertices
+            br.readInt32();
+            // read out length
+            br.readInt32();
+
             shapeGeom.parse(br);
 
 
